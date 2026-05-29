@@ -1,0 +1,77 @@
+{% extends 'piherz_store/base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="fw-bold mb-4">Tu Carrito</h2>
+    {% if carrito %}
+    <div class="row g-4 align-items-start">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <p class="mb-0">Productos en tu carrito</p>
+                    <p class="fw-bold fs-5 mb-0">{{ carrito|length }} artículo</p>
+                </div>
+                <a href="{% url 'index' %}" class="btn text-white" style="background-color: #00CED1;">Seguir comprando</a>
+            </div>
+            <div class="p-0">
+                <ul class="list-group">
+                    {% for key, item in carrito.items %}
+                    <li class="list-group-item border-0 py-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-2">
+                                {% if item.imagen %}
+                                    <img src="{{ item.imagen }}" alt="{{ item.nombre }}" class="img-fluid rounded" style="max-width: 80px;">
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <h5 class="mb-1">
+                                    {% if item.nombre|lower == 'pesas' %}Pesas
+                                    {% elif item.nombre|lower == 'chaqueta' %}Chaqueta
+                                    {% elif item.nombre|lower == 'porta casco' %}Porta Casco
+                                    {% else %}{{ item.nombre }}{% endif %}
+                                </h5>
+                                <p class="text-muted small mb-2" translate="no">Precio unitario: ${{ item.precio|floatformat:0|intcomma }}</p>
+                                
+                                <form action="{% url 'actualizar_carrito' key %}" method="post" class="d-flex align-items-center">
+                                    {% csrf_token %}
+                                    <div class="input-group" style="width: 130px; margin-right: 10px;">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="this.nextElementSibling.stepDown()">-</button>
+                                        <input type="number" name="cantidad" value="{{ item.cantidad }}" min="1" class="form-control form-control-sm text-center" step="1" inputmode="numeric" pattern="[0-9]*" oninput="if (this.value === '' || parseInt(this.value) < 1) this.value = 1;">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="this.previousElementSibling.stepUp()">+</button>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm text-white" style="background-color: #00CED1; padding: 5px 15px;">Actualizar</button>
+                                </form>
+                            </div>
+                            
+                            <div class="col-md-4 text-end">
+                                <p class="mb-1" translate="no">Subtotal</p>
+                                <h4 class="mb-2 fw-bold">${{ item.subtotal|floatformat:0|intcomma }}</h4>
+                                <a href="{% url 'remover_del_carrito' key %}" class="btn-eliminar">Eliminar</a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4 d-none d-lg-block">
+            {% include 'piherz_store/Carrito_Pc.html' with total=total %}
+        </div>
+
+    </div> 
+
+    <div class="d-lg-none mt-4">
+        {% include 'piherz_store/Carrito_Mobile.html' with total=total %}
+    </div>
+
+    {% else %}
+        <div class="text-center py-5">
+            <p class="fs-4">Tu carrito está vacío.</p>
+            <a href="{% url 'index' %}" class="btn text-white mt-3" style="background-color: #00CED1;">Volver a la tienda</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

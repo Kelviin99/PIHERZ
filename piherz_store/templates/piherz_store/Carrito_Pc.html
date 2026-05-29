@@ -1,0 +1,20 @@
+{% load humanize %}
+<div class="card shadow-sm border-0 pt-3 pb-4 px-4" style="border-radius: 10px; border: 1px solid #eee;">
+    <h5 class="fw-bold mb-4">Resumen puercos </h5>
+    
+    <div class="d-flex justify-content-between mb-3">
+        <span class="text-muted">Productos</span>
+        <span class="fw-bold fs-6">${{ total|default:0|floatformat:0|intcomma }}</span>
+    </div>
+    
+    <hr class="mb-4">
+    
+    <div class="d-flex justify-content-between mb-4">
+        <span class="fw-bold fs-5">Total</span>
+        <span class="fw-bold fs-5">${{ total|default:0|floatformat:0|intcomma }}</span>
+    </div>
+    
+    <a href="#" class="btn w-100 py-3 text-white" style="background-color: #00CED1; font-weight: 600; border-radius: 5px; font-size: 1.1rem;">
+        Continuar compra
+    </a>
+</div>

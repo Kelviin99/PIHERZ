@@ -1,0 +1,9 @@
+Performing system checks...
+
+May 25, 2026 - 01:09:18
+Django version 6.0.5, using settings 'piherz_project.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/6.0/howto/deployment/
