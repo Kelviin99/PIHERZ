@@ -1,3 +1,196 @@
+/* Aplicar fuente Poppins globalmente */
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+/* Puntos indicadores del carrucel estilo Falabella */
+#productCarousel .carousel-indicators {
+    position: static;
+    margin-top: 15px;
+    padding: 10px 0;
+}
+
+#productCarousel .carousel-indicators [data-bs-target] {
+    width: 20px;
+    height: 8px;
+    border-radius: 10px;
+    background-color: #d0d0d0;
+    border: none;
+    margin: 0 5px;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+#productCarousel .carousel-indicators [data-bs-target].active {
+    background-color: #0dcaf0;
+    transform: scale(1.1);
+}
+
+/* Ocultar puntos indicadores en PC, mostrar solo en móvil */
+@media (min-width: 769px) {
+    #productCarousel .carousel-indicators {
+        display: none;
+    }
+}
+
+/* Transición suave de imágenes estilo Falabella */
+#productCarousel .carousel-item {
+    transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+    overflow: visible;
+}
+
+#productCarousel .carousel-item img {
+    transition: opacity 0.6s ease-in-out;
+    object-fit: contain;
+    width: 100%;
+    height: auto;
+}
+
+#productCarousel .carousel-inner {
+    overflow: hidden;
+    position: relative;
+}
+
+/* Horizontal Scroll Gallery solo para móvil */
+@media (max-width: 768px) {
+    #productCarousel .carousel-inner {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    }
+    
+    #productCarousel .carousel-item {
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+        transition: none;
+        width: 100%;
+        height: auto;
+    }
+    
+    #productCarousel .carousel-item img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+    
+    #productCarousel .carousel-item.active {
+        position: relative;
+    }
+    
+    /* Ocultar controles del carrusel en móvil */
+    #productCarousel .carousel-control-prev,
+    #productCarousel .carousel-control-next {
+        display: none !important;
+    }
+}
+
+/* Flechas de navegación personalizadas - círculo blanco con flecha negra */
+#productCarousel .carousel-control-prev,
+#productCarousel .carousel-control-next {
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+    transition: all 0.3s ease;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#productCarousel .carousel-control-prev {
+    left: 15px;
+}
+
+#productCarousel .carousel-control-next {
+    right: 15px;
+}
+
+#productCarousel .carousel-control-prev:hover,
+#productCarousel .carousel-control-next:hover {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.2);
+    transform: translateY(-50%) scale(1.05);
+}
+
+#productCarousel .carousel-control-prev-icon {
+    filter: invert(1) grayscale(100%);
+    width: 35px;
+    height: 35px;
+    margin-left: -7px;
+    margin-top: 5px;
+}
+
+#productCarousel .carousel-control-next-icon {
+    filter: invert(1) grayscale(100%);
+    width: 35px;
+    height: 35px;
+    margin-right: -3px;
+    margin-top: 5px;
+}
+
+/* Ocultar flechas en móvil */
+@media (max-width: 992px) {
+    #productCarousel .carousel-control-prev,
+    #productCarousel .carousel-control-next,
+    #productCarousel .carousel-control-prev-icon,
+    #productCarousel .carousel-control-next-icon {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+}
+
+/* Optimizar visor 3D para móviles */
+#viewer3D {
+    background-color: #f5f5f5;
+}
+
+model-viewer {
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    #viewer3D {
+        height: 400px;
+    }
+    
+    #btn3D {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    #btnClose3D {
+        width: 35px !important;
+        height: 35px !important;
+    }
+}
+
+.carousel-dot {
+    height: 8px;
+    width: 20px;
+    margin: 0 5px;
+    background-color: #d0d0d0;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-dot.active {
+    background-color: #0dcaf0;
+    transform: scale(1.1);
+}
+
 /* Estilos corregidos para la barra */
 .navbar-main { 
     background-color: #fff; 
@@ -78,31 +271,50 @@
 
 /* --- ADAPTACIÓN A CELULAR (Responsive) --- */
 @media (max-width: 768px) {
-    .nav-wrapper,
-    .navbar-main .container {
-        flex-wrap: nowrap;
+    .nav-wrapper {
+        flex-wrap: wrap;
+        padding: 10px 5%;
         align-items: center;
+        justify-content: center;
     }
 
-    .nav-logo,
-    .navbar-brand {
+    .nav-logo {
         order: 1;
         flex: 0 0 auto;
+        text-align: center;
+        margin: 0 auto 15px auto;
     }
 
-    .nav-search,
-    .search-container {
+    .nav-logo img {
+        width: 100px;
+        height: auto;
+    }
+
+    .nav-cart {
         order: 2;
         flex: 1 1 auto;
-        max-width: none;
-        margin: 0 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 0 -20px 0;
+        width: 100%;
     }
 
-    .nav-cart,
-    .cart-container {
-        order: 3;
+    .nav-cart .dropdown {
         flex: 0 0 auto;
-        margin-left: 0;
+    }
+
+    .nav-cart a {
+        flex: 0 0 auto;
+        margin-left: auto;
+    }
+
+    .nav-search {
+        order: 3;
+        flex: 1 1 auto;
+        max-width: none;
+        margin: 0;
+        width: 100%;
     }
 }
 
@@ -268,6 +480,7 @@ div.thumbnail-item.active {
     height: 100%;
     max-height: 820px;
     object-fit: contain !important;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .image-nav-btn {
@@ -277,9 +490,9 @@ div.thumbnail-item.active {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.95);
-    background: rgba(0, 0, 0, 0.4);
-    color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.95);
+    color: #000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -289,10 +502,10 @@ div.thumbnail-item.active {
 }
 
 .image-nav-btn:hover {
-    background: rgba(255, 255, 255, 0.95);
-    color: #111;
+    background: rgba(255, 255, 255, 1);
+    color: #000;
     transform: translateY(-50%) scale(1.05);
-    border-color: rgba(255, 255, 255, 1);
+    border-color: rgba(0, 0, 0, 0.3);
 }
 
 .image-nav-btn i {
@@ -307,13 +520,9 @@ div.thumbnail-item.active {
     right: 12px;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 768px) {
     .image-nav-btn {
-        width: 40px;
-        height: 40px;
-    }
-    .image-nav-btn i {
-        font-size: 1.1rem;
+        display: none !important;
     }
 }
 
@@ -340,4 +549,834 @@ div.thumbnail-item.active {
     .main-product-image {
         max-height: 560px;
     }
+}
+
+/* --- Modal de Login (Estilo Falabella) --- */
+.login-background-content {
+    pointer-events: none;
+}
+
+.login-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+}
+
+.login-modal-container {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 420px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    padding: 32px;
+    position: relative;
+}
+
+.login-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.login-modal-logo {
+    display: flex;
+    align-items: center;
+}
+
+.login-modal-logo-img {
+    width: 120px;
+    height: auto;
+}
+
+.login-modal-close-btn {
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    color: #888888;
+    cursor: pointer;
+    line-height: 1;
+    padding: 5px;
+    transition: color 0.2s ease;
+    position: absolute;
+    top: 16px;
+    right: 18px;
+}
+
+.login-modal-close-btn:hover {
+    color: #333333;
+}
+
+.login-modal-body {
+    padding: 0 8px;
+}
+
+.login-modal-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 24px 0;
+    text-align: center;
+}
+
+.login-modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.login-modal-field-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+}
+
+.login-modal-field-wrapper {
+    position: relative;
+}
+
+.login-modal-field-input {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-bottom: 2px solid #dddddd;
+    border-radius: 0;
+    font-size: 16px;
+    color: #333333;
+    outline: none;
+    background: transparent;
+    transition: border-color 0.2s ease;
+}
+
+.login-modal-field-input::placeholder {
+    color: #999999;
+    font-size: 14px;
+}
+
+.login-modal-field-input:focus {
+    border-color: #0dcaf0;
+}
+
+.login-modal-links {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.login-modal-link {
+    font-size: 13px;
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.login-modal-link:hover {
+    color: #1a4971;
+    text-decoration: underline;
+}
+
+.login-modal-btn {
+    background-color: #0dcaf0;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 8px;
+}
+
+.login-modal-btn:hover {
+    background-color: #0baccc;
+}
+
+.login-modal-btn:active {
+    transform: scale(0.98);
+}
+
+/* --- Modal de Registro (Estilo Falabella) --- */
+.register-background-content {
+    pointer-events: none;
+}
+
+.register-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+}
+
+.register-modal-container {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 900px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    padding: 32px;
+    position: relative;
+    display: flex;
+    gap: 40px;
+}
+
+.register-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+}
+
+.register-modal-logo {
+    display: flex;
+    align-items: center;
+}
+
+.register-modal-logo-img {
+    width: 120px;
+    height: auto;
+}
+
+.register-modal-close-btn {
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    color: #888888;
+    cursor: pointer;
+    line-height: 1;
+    padding: 5px;
+    transition: color 0.2s ease;
+    position: absolute;
+    top: 16px;
+    right: 18px;
+}
+
+.register-modal-close-btn:hover {
+    color: #333333;
+}
+
+.register-modal-body {
+    display: flex;
+    gap: 40px;
+    width: 100%;
+}
+
+.register-modal-form-section {
+    flex: 1;
+}
+
+.register-modal-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 24px 0;
+}
+
+.register-modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.register-modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.register-modal-field-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+}
+
+.register-modal-field-wrapper {
+    position: relative;
+}
+
+.register-modal-field-input {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-bottom: 2px solid #dddddd;
+    border-radius: 0;
+    font-size: 16px;
+    color: #333333;
+    outline: none;
+    background: transparent;
+    transition: border-color 0.2s ease;
+}
+
+.register-modal-field-input::placeholder {
+    color: #999999;
+    font-size: 14px;
+}
+
+.register-modal-field-input:focus {
+    border-color: #0dcaf0;
+}
+
+.register-modal-btn {
+    background-color: #0dcaf0;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 16px;
+}
+
+.register-modal-btn:hover {
+    background-color: #0baccc;
+}
+
+.register-modal-btn:active {
+    transform: scale(0.98);
+}
+
+.register-modal-benefits {
+    flex: 0 0 300px;
+    padding-left: 40px;
+    border-left: 1px solid #f0f0f0;
+}
+
+.register-modal-benefits-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 16px 0;
+}
+
+.register-modal-benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.register-modal-benefits-list li {
+    font-size: 14px;
+    color: #555555;
+    margin-bottom: 12px;
+    padding-left: 24px;
+    position: relative;
+}
+
+.register-modal-benefits-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #0dcaf0;
+    font-weight: bold;
+}
+
+/* --- Página de Registro Completa (Estilo Falabella) --- */
+.register-page-container {
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding: 40px 20px;
+}
+
+.register-page-content {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 60px;
+}
+
+.register-page-form-section {
+    width: 100%;
+}
+
+.register-page-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.register-page-logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.register-page-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+}
+
+.register-page-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.register-page-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.register-page-field-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+}
+
+.register-page-field-wrapper {
+    position: relative;
+}
+
+.register-page-field-input {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-bottom: 2px solid #dddddd;
+    border-radius: 0;
+    font-size: 16px;
+    color: #333333;
+    outline: none;
+    background: transparent;
+    transition: border-color 0.2s ease;
+}
+
+.register-page-field-input::placeholder {
+    color: #999999;
+    font-size: 14px;
+}
+
+.register-page-field-input:focus {
+    border-color: #0dcaf0;
+}
+
+.register-page-field-input[type="select"],
+-select.register-page-field-input {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-bottom: 2px solid #dddddd;
+    border-radius: 0;
+    font-size: 16px;
+    color: #333333;
+    outline: none;
+    background: transparent;
+    transition: border-color 0.2s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+select.register-page-field-input:focus {
+    border-color: #0dcaf0;
+}
+
+.register-page-field-wrapper {
+    position: relative;
+}
+
+.register-page-select-wrapper {
+    position: relative;
+}
+
+.register-page-select-arrow {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    color: #333333;
+    pointer-events: none;
+}
+
+.register-page-btn {
+    background-color: #0dcaf0;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 16px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 16px;
+}
+
+.register-page-btn:hover {
+    background-color: #0baccc;
+}
+
+.register-page-btn:active {
+    transform: scale(0.98);
+}
+
+.register-page-login-link {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: #555555;
+}
+
+.register-page-login-link a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-page-login-link a:hover {
+    text-decoration: underline;
+}
+
+.register-page-benefits {
+    flex: 0 0 350px;
+    padding-left: 60px;
+    border-left: 1px solid #f0f0f0;
+}
+
+.register-page-benefits-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 24px 0;
+}
+
+.register-page-benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.register-page-benefits-list li {
+    font-size: 15px;
+    color: #555555;
+    margin-bottom: 16px;
+    padding-left: 32px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.register-page-benefits-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #0dcaf0;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* --- Estilos adicionales para campos nuevos --- */
+.register-page-document-row {
+    display: flex;
+    gap: 16px;
+}
+
+.register-page-field-half {
+    flex: 1;
+}
+
+.register-page-document-combined {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+    border-bottom: 2px solid #dddddd;
+}
+
+.register-page-document-combined .register-page-select-wrapper {
+    flex: 0 0 auto;
+    padding-right: 20px;
+}
+
+.register-page-document-combined .register-page-field-input[type="text"] {
+    flex: 1;
+    border: none;
+    border-radius: 0;
+}
+
+.register-page-document-combined .register-page-field-input {
+    border: none;
+    border-radius: 0;
+}
+
+.register-page-document-combined select.register-page-field-input {
+    border: none;
+    border-radius: 0;
+}
+
+.register-page-select-arrow {
+    pointer-events: none;
+}
+
+.register-page-select-wrapper {
+    position: relative;
+}
+
+.register-page-select-wrapper select {
+    cursor: pointer;
+}
+
+.register-page-phone-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.register-page-phone-prefix {
+    font-size: 16px;
+    color: #333333;
+    font-weight: 600;
+}
+
+.register-page-phone-input {
+    flex: 1;
+}
+
+.register-page-password-requirements {
+    margin-top: 8px;
+    padding: 12px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+}
+
+.register-page-requirements-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 8px 0;
+}
+
+.register-page-requirements-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+}
+
+.register-page-requirements-list li {
+    font-size: 12px;
+    color: #666666;
+    padding-left: 16px;
+    position: relative;
+}
+
+.register-page-requirements-list li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #0dcaf0;
+}
+
+.register-page-checkboxes {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.register-page-checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.register-page-checkbox {
+    margin-top: 2px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.register-page-checkbox-label {
+    font-size: 13px;
+    color: #555555;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+.register-page-benefits-section {
+    margin-top: 24px;
+}
+
+.register-page-benefits-subtitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 16px 0;
+}
+
+/* --- Dropdown Menu Estilo Falabella --- */
+.nav-cart .dropdown-toggle {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333333;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.nav-cart .dropdown-toggle:hover {
+    background-color: #f5f5f5;
+}
+
+.nav-cart .dropdown-toggle::after {
+    margin-left: 6px;
+    font-size: 10px;
+}
+
+.nav-cart .dropdown-menu {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 8px 0;
+    min-width: 200px;
+    margin-top: 8px;
+}
+
+.nav-cart .dropdown-item {
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #333333;
+    transition: background-color 0.2s ease;
+}
+
+.nav-cart .dropdown-item:hover {
+    background-color: #f5f5f5;
+    color: #0dcaf0;
+}
+
+.nav-cart .dropdown-divider {
+    margin: 8px 0;
+    border-color: #e0e0e0;
+}
+
+/* --- Dropdown Hover --- */
+.dropdown-hover:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+
+.dropdown-hover .dropdown-menu {
+    display: none;
+}
+
+/* --- Login Modal Estilo Falabella --- */
+#loginModal .modal-dialog {
+    max-width: 450px;
+}
+
+#loginModal .modal-content {
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border: none;
+}
+
+#loginModal .modal-header {
+    padding: 20px 24px 10px 24px;
+}
+
+#loginModal .modal-body {
+    padding: 10px 24px 24px 24px;
+}
+
+#loginModal .modal-body h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333333;
+}
+
+#loginModal .form-control {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 14px;
+}
+
+#loginModal .form-control:focus {
+    border-color: #0dcaf0;
+    box-shadow: 0 0 0 3px rgba(13, 202, 240, 0.1);
+}
+
+#loginModal .input-group .btn-outline-secondary {
+    border: 1px solid #ddd;
+    border-left: none;
+    background-color: #f8f9fa;
+}
+
+#loginModal .btn-piherz {
+    background-color: #0dcaf0;
+    border-color: #0dcaf0;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 14px 24px;
+    border-radius: 8px;
+}
+
+#loginModal .btn-piherz:hover {
+    background-color: #0baccc;
+    border-color: #0baccc;
+}
+
+/* Asegurar que los iconos en botones se mantengan en la misma línea */
+.btn i {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    line-height: 1 !important;
+}
+
+/* Específico para botones con iconos de carrito */
+.btn .bi-cart3 {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+}
+
+/* Poppins Font Classes */
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }

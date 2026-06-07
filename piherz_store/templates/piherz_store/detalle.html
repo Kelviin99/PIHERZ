@@ -34,16 +34,61 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-9">
-                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden main-image-card position-relative">
-                        <button type="button" class="image-nav-btn image-nav-prev" onclick="showPreviousImage()" aria-label="Imagen anterior" style="position:absolute; top:50%; left:12px; transform:translateY(-50%); width:48px; height:48px; border-radius:50%; border:none; background:rgba(0,0,0,0.45); color:#ffffff; display:flex; align-items:center; justify-content:center; z-index:10;">
-                            <i class="bi bi-chevron-left"></i>
+                    <div id="productCarousel" class="carousel slide" data-bs-interval="false">
+                        <div class="carousel-inner rounded-4 overflow-hidden">
+                            {% if producto.imagenes.exists %}
+                                {% for imagen in producto.imagenes.all %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <img src="{{ imagen.imagen.url }}" class="d-block w-100 main-product-image" alt="{{ producto.nombre }}">
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="carousel-item active">
+                                    <img src="{{ producto.imagen.url }}" class="d-block w-100 main-product-image" alt="{{ producto.nombre }}">
+                                </div>
+                            {% endif %}
+                        </div>
+                        <button class="carousel-control-prev d-none d-md-block" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Anterior</span>
                         </button>
-                        <button type="button" class="image-nav-btn image-nav-next" onclick="showNextImage()" aria-label="Siguiente imagen" style="position:absolute; top:50%; right:12px; transform:translateY(-50%); width:48px; height:48px; border-radius:50%; border:none; background:rgba(0,0,0,0.45); color:#ffffff; display:flex; align-items:center; justify-content:center; z-index:10;">
-                            <i class="bi bi-chevron-right"></i>
+                        <button class="carousel-control-next d-none d-md-block" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Siguiente</span>
                         </button>
-                        <img id="imagenPrincipal" src="{% if producto.imagenes.exists %}{{ producto.imagenes.first.imagen.url }}{% else %}{{ producto.imagen.url }}{% endif %}" 
-                             class="img-fluid w-100 main-product-image" alt="{{ producto.nombre }}">
+                        <div class="carousel-indicators mt-3" id="carouselIndicators">
+                            {% if producto.imagenes.exists %}
+                                {% for imagen in producto.imagenes.all %}
+                                    <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+                                {% endfor %}
+                            {% else %}
+                                <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
+                            {% endif %}
+                        </div>
+                        {% if producto.modelo_3d %}
+                        <div class="position-absolute bottom-0 end-0 m-3">
+                            <button id="btn3D" class="btn btn-light rounded-circle shadow-sm" style="width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;" onclick="toggle3DView()">
+                                <i class="bi bi-box-seam fs-5"></i>
+                            </button>
+                        </div>
+                        {% endif %}
                     </div>
+                    {% if producto.modelo_3d %}
+                    <div id="viewer3D" class="d-none rounded-4 overflow-hidden" style="height: 500px; position: relative;">
+                        <model-viewer 
+                            src="{{ producto.modelo_3d.url }}" 
+                            alt="{{ producto.nombre }} 3D"
+                            auto-rotate
+                            camera-controls
+                            touch-action="pan-y"
+                            style="width: 100%; height: 100%;"
+                            loading="eager">
+                        </model-viewer>
+                        <button id="btnClose3D" class="position-absolute top-0 end-0 m-3 btn btn-light rounded-circle shadow-sm" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; z-index: 10;" onclick="toggle3DView()">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -52,9 +97,15 @@
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <div>
                     <span class="text-uppercase fw-semibold text-secondary" style="font-size: 0.8rem;">PIHERZ</span>
-                    <div class="text-muted" style="font-size: 0.85rem;">Envío rápido | Stock disponible</div>
+                    <div style="font-size: 0.85rem;">
+                        {% if producto.stock > 0 %}
+                            <span class="text-dark">Envío rápido | Stock disponible</span>
+                        {% else %}
+                            <span class="text-dark">Envío rápido | </span><span class="text-danger">Agotado</span>
+                        {% endif %}
+                    </div>
                 </div>
-                <button class="btn btn-outline-secondary rounded-circle p-2" type="button" style="width: 44px; height: 44px;">
+                <button class="btn btn-outline-secondary rounded-circle p-2 heart-btn" type="button" style="width: 44px; height: 44px;">
                     <i class="bi bi-heart"></i>
                 </button>
             </div>
@@ -71,7 +122,7 @@
             <form id="formCarrito" onsubmit="return ejecutarCarrito(event, {{ producto.id }}, '{{ producto.imagen.url|default:''|escapejs }}', '{{ producto.nombre|escapejs }}')">
                 {% csrf_token %}
                 
-                <div class="d-none d-md-flex align-items-end gap-3">
+                <div class="d-none d-md-flex align-items-center gap-3">
                     <div>
                         <label for="cantidad" class="form-label small text-secondary d-block mb-2">Cantidad</label>
                         <div class="input-group" style="width: 130px;">
@@ -81,9 +132,16 @@
                         </div>
                     </div>
                     <div class="flex-grow-1">
-                        <button type="submit" class="btn btn-info text-white w-100 btn-lg" style="padding: 0.75rem 2rem;">
-                            Agregar al Carrito <i class="bi bi-cart3 ms-2"></i>
+                        {% if producto.stock > 0 %}
+                        <button type="submit" class="btn btn-info text-white w-100 btn-lg" style="padding: 0.75rem 3rem 0.75rem 2rem; position: relative;">
+                            Agregar al Carrito
+                            <i class="bi bi-cart3" style="position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);"></i>
                         </button>
+                        {% else %}
+                        <div class="text-danger fw-bold text-center" style="font-size: 1.2rem; padding: 0.75rem 2rem;">
+                            Agotado
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -97,7 +155,16 @@
                             </div>
                         </div>
                         <div class="flex-grow-1">
-                            <button type="submit" class="btn btn-info text-white w-100 py-2">Agregar <i class="bi bi-cart3 ms-2"></i></button>
+                            {% if producto.stock > 0 %}
+                            <button type="submit" class="btn btn-info text-white w-100 py-2" style="padding: 0.5rem 2.5rem 0.5rem 1rem; position: relative;">
+                                Agregar
+                                <i class="bi bi-cart3" style="position: absolute; right: 1.25rem; top: 50%; transform: translateY(-50%);"></i>
+                            </button>
+                            {% else %}
+                            <div class="text-danger fw-bold text-center py-2" style="font-size: 1.1rem;">
+                                Agotado
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -117,9 +184,6 @@
         inputMob.value = val;
     }
 
-    const productImages = [{% if producto.imagenes.exists %}{% for imagen in producto.imagenes.all %}'{{ imagen.imagen.url }}'{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}'{{ producto.imagen.url }}'{% endif %}];
-    let currentImageIndex = 0;
-
     function ejecutarCarrito(event, id, img, nom) {
         event.preventDefault();
         const cant = document.getElementById('cantidad').value;
@@ -131,44 +195,45 @@
         return false;
     }
 
-    function updateThumbnailActive() {
-        document.querySelectorAll('.thumbnail-item').forEach((item, index) => {
-            item.classList.toggle('active', index === currentImageIndex);
-            if (index === currentImageIndex) {
-                item.style.cssText = 'border-color: #00bcd4 !important; background-color: #e0f7fa !important; box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3) !important;';
-            } else {
-                item.style.cssText = 'border-color: #ddd !important; background-color: #fff !important; box-shadow: none !important;';
-            }
-        });
-    }
-
-    function showImageAt(index) {
-        if (productImages.length === 0) return;
-        currentImageIndex = (index + productImages.length) % productImages.length;
-        document.getElementById('imagenPrincipal').src = productImages[currentImageIndex];
-        updateThumbnailActive();
-    }
-
-    function showPreviousImage() {
-        showImageAt(currentImageIndex - 1);
-    }
-
-    function showNextImage() {
-        showImageAt(currentImageIndex + 1);
-    }
-
     function cambiarImagen(thumbnailElement, url) {
-        const index = productImages.indexOf(url);
-        if (index >= 0) {
-            showImageAt(index);
-        } else {
-            document.getElementById('imagenPrincipal').src = url;
-            thumbnailElement.classList.add('active');
+        // Actualizar clase active en miniaturas
+        document.querySelectorAll('.thumbnail-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        thumbnailElement.classList.add('active');
+
+        // Cambiar imagen en el carrusel
+        const carousel = new bootstrap.Carousel(document.getElementById('productCarousel'));
+        const items = document.querySelectorAll('#productCarousel .carousel-item');
+        for (let i = 0; i < items.length; i++) {
+            const imgSrc = items[i].querySelector('img').src;
+            // Comparación más robusta de URLs
+            if (imgSrc.includes(url) || url.includes(imgSrc) || imgSrc === url) {
+                carousel.to(i);
+                break;
+            }
         }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        updateThumbnailActive();
+        // Habilitar swipe en móvil para el carrusel
+        const carouselElement = document.getElementById('productCarousel');
+        const carousel = new bootstrap.Carousel(carouselElement, {
+            touch: true
+        });
     });
+
+    function toggle3DView() {
+        const carousel = document.getElementById('productCarousel');
+        const viewer3D = document.getElementById('viewer3D');
+        
+        if (carousel.classList.contains('d-none')) {
+            carousel.classList.remove('d-none');
+            viewer3D.classList.add('d-none');
+        } else {
+            carousel.classList.add('d-none');
+            viewer3D.classList.remove('d-none');
+        }
+    }
 </script>
 {% endblock %}

@@ -1,6 +1,6 @@
 # piherz_store/admin.py
 from django.contrib import admin
-from .models import Categoria, Producto, ImagenProducto
+from .models import Categoria, Producto, ImagenProducto, CarritoItem
 
 class ImagenProductoInline(admin.TabularInline):
     model = ImagenProducto
@@ -25,3 +25,10 @@ class ImagenProductoAdmin(admin.ModelAdmin):
     list_display = ['producto', 'orden', 'creado']
     list_filter = ['creado']
     ordering = ['producto', 'orden']
+
+@admin.register(CarritoItem)
+class CarritoItemAdmin(admin.ModelAdmin):
+    list_display = ['usuario', 'producto', 'cantidad', 'creado', 'actualizado']
+    list_filter = ['creado', 'actualizado']
+    search_fields = ['usuario__username', 'producto__nombre']
+    readonly_fields = ['creado', 'actualizado']

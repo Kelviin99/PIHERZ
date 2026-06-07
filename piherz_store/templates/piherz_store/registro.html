@@ -1,0 +1,181 @@
+{% extends 'piherz_store/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    #tipo_documento_display {
+        background-color: transparent !important;
+        color: #000 !important;
+    }
+    #tipo_documento_display:focus,
+    #tipo_documento_display:active,
+    #tipo_documento_display.show {
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
+    #tipo_documento_display:hover {
+        background-color: #17a2b8 !important;
+        color: #fff !important;
+    }
+</style>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        <!-- Left side - Form -->
+                        <div class="col-lg-8 offset-lg-2 p-4">
+                            <h2 class="mb-4 fw-bold">Inicia sesión o regístrate para comprar</h2>
+                            
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            
+                            <form method="post" action="{% url 'registro' %}">
+                                {% csrf_token %}
+                                
+                                <div class="mb-3">
+                                    <label for="email" class="form-label fw-semibold">Correo</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Ingresa tu correo" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label fw-semibold">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresa tu nombre" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="apellidos" class="form-label fw-semibold">Apellidos</label>
+                                    <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Ingresa tus apellidos" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="documento" class="form-label fw-semibold">Tipo de Documento</label>
+                                    <div class="input-group">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="tipo_documento_display" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 60px; border-color: #ced4da;">
+                                            <span id="tipo_documento_text">CC</span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="tipo_documento_display">
+                                            <li><a class="dropdown-item" href="#" data-value="CC">CC (cédula de ciudadanía)</a></li>
+                                            <li><a class="dropdown-item" href="#" data-value="CE">CE (cédula de extranjería)</a></li>
+                                        </ul>
+                                        <input type="hidden" id="tipo_documento" name="tipo_documento" value="CC" required>
+                                        <input type="text" class="form-control" id="documento" name="documento" placeholder="Ingresa un documento de identidad" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="celular" class="form-label fw-semibold">Celular</label>
+                                    <input type="tel" class="form-control" id="celular" name="celular" placeholder="Ingresa tu celular" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="password" class="form-label fw-semibold">Contraseña</label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                            <i class="bi bi-eye" id="eyeIcon"></i>
+                                        </button>
+                                    </div>
+                                    <div class="mt-2 small text-muted">
+                                        <div class="row">
+                                            <div class="col-6"><span id="min-char">•</span> Min. 8 caracteres</div>
+                                            <div class="col-6"><span id="min-lower">•</span> 1 minúscula</div>
+                                            <div class="col-6"><span id="min-number">•</span> 1 número</div>
+                                            <div class="col-6"><span id="no-space">•</span> Sin espacio</div>
+                                            <div class="col-6"><span id="min-upper">•</span> 1 mayúscula</div>
+                                            <div class="col-6"><span id="no-special">•</span> Sin usar </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="cmr_puntos" name="cmr_puntos">
+                                        <label class="form-check-label small" for="cmr_puntos">
+                                            Acumular CMR Puntos y autorizar el tratamiento de mis datos personales de acuerdo con la Política de Privacidad.
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="terminos" name="terminos" required>
+                                        <label class="form-check-label small" for="terminos">
+                                            Acepto los Términos y Condiciones y autorizo el tratamiento de mis datos personales.
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-piherz btn-lg">Registrarse</button>
+                                </div>
+                            </form>
+                            
+                            <div class="text-center mt-4">
+                                <p class="mb-0">¿Ya tienes cuenta? <a href="#" class="text-decoration-none fw-semibold" data-bs-toggle="modal" data-bs-target="#loginModal">Inicia sesión</a></p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const passwordInput = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('bi-eye');
+        eyeIcon.classList.add('bi-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('bi-eye-slash');
+        eyeIcon.classList.add('bi-eye');
+    }
+});
+
+// Password validation
+document.getElementById('password').addEventListener('input', function() {
+    const password = this.value;
+    const minChar = document.getElementById('min-char');
+    const minLower = document.getElementById('min-lower');
+    const minNumber = document.getElementById('min-number');
+    const noSpace = document.getElementById('no-space');
+    const minUpper = document.getElementById('min-upper');
+    const noSpecial = document.getElementById('no-special');
+    
+    minChar.textContent = password.length >= 8 ? '✓' : '•';
+    minLower.textContent = /[a-z]/.test(password) ? '✓' : '•';
+    minNumber.textContent = /[0-9]/.test(password) ? '✓' : '•';
+    noSpace.textContent = !/\s/.test(password) ? '✓' : '•';
+    minUpper.textContent = /[A-Z]/.test(password) ? '✓' : '•';
+    noSpecial.textContent = /^[a-zA-Z0-9]*$/.test(password) ? '✓' : '•';
+});
+
+// Bootstrap dropdown for document type
+const dropdownItems = document.querySelectorAll('#tipo_documento_display + .dropdown-menu .dropdown-item');
+const tipoDocumentoText = document.getElementById('tipo_documento_text');
+const tipoDocumentoInput = document.getElementById('tipo_documento');
+
+dropdownItems.forEach(item => {
+    item.addEventListener('click', function(e) {
+        e.preventDefault();
+        const value = this.getAttribute('data-value');
+        tipoDocumentoText.textContent = value;
+        tipoDocumentoInput.value = value;
+    });
+});
+</script>
+{% endblock %}

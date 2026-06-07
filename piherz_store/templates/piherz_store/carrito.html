@@ -37,7 +37,7 @@
                                 <form action="{% url 'actualizar_carrito' key %}" method="post" class="d-flex align-items-center">
                                     {% csrf_token %}
                                     <div class="input-group" style="width: 130px; margin-right: 10px;">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="this.nextElementSibling.stepDown()">-</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decrementarCantidad(this, '/remover/{{ key }}/')">-</button>
                                         <input type="number" name="cantidad" value="{{ item.cantidad }}" min="1" class="form-control form-control-sm text-center" step="1" inputmode="numeric" pattern="[0-9]*" oninput="if (this.value === '' || parseInt(this.value) < 1) this.value = 1;">
                                         <button type="button" class="btn btn-outline-secondary btn-sm" onclick="this.previousElementSibling.stepUp()">+</button>
                                     </div>
@@ -74,4 +74,18 @@
         </div>
     {% endif %}
 </div>
+
+<script>
+function decrementarCantidad(button, urlEliminar) {
+    const input = button.nextElementSibling;
+    const cantidadActual = parseInt(input.value);
+    
+    if (cantidadActual > 1) {
+        input.stepDown();
+    } else {
+        // Si la cantidad es 1, eliminar el producto sin confirmación
+        window.location.href = urlEliminar;
+    }
+}
+</script>
 {% endblock %}

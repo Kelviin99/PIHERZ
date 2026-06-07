@@ -12,6 +12,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# Configuración CSRF para evitar errores de verificación
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://192.168.0.17:8000',
+]
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,6 +55,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media', # IMPORTANTE: Para las imágenes
+                'piherz_store.context_processors.carrito_context', # Para el carrito sincronizado
             ],
         },
     },
