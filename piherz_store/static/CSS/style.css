@@ -1,6 +1,6 @@
-/* Aplicar fuente Poppins globalmente */
+/* Aplicar fuente Roboto globalmente (estilo Falabella) */
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 /* Puntos indicadores del carrucel estilo Falabella */
@@ -191,36 +191,10 @@ model-viewer {
     transform: scale(1.1);
 }
 
-/* Estilos corregidos para la barra */
-.navbar-main { 
-    background-color: #fff; 
-    border-bottom: 1px solid #eee; 
-}
-
-.navbar-container { 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-}
-
-.search-container { 
-    flex-grow: 1; 
-    max-width: 500px; 
-    margin: 0 20px; 
-}
-
-/* Ajuste para celular: El buscador baja, el logo y carrito quedan arriba */
-@media (max-width: 991px) {
-    .navbar-container { flex-wrap: wrap; }
-    .search-container { order: 3; width: 100%; margin: 15px 0 0 0; }
-    .navbar-brand { order: 1; }
-    .cart-container { order: 2; margin-left: auto; }
-}
 
 /* Contenedor principal */
 .piherz-navbar {
     background: #fff;
-    border-bottom: 2px solid #f0f0f0;
     padding: 15px 5%;
     width: 100%;
 }
@@ -371,6 +345,13 @@ model-viewer {
     border-color: #0bb8d9;
     color: #ffffff;
 }
+.btn-piherz {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
 .text-piherz {
     color: #0dcaf0 !important;
 }
@@ -421,6 +402,19 @@ input[type=number] {
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
+}
+.product-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+.product-card .card-text {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+.product-card .product-brand {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
 /* --- Botón Eliminar Corregido --- */
@@ -478,7 +472,7 @@ div.thumbnail-item.active {
 
 .main-product-image {
     height: 100%;
-    max-height: 820px;
+    max-height: 900px;
     object-fit: contain !important;
     transition: opacity 0.3s ease-in-out;
 }
@@ -1334,7 +1328,7 @@ select.register-page-field-input:focus {
 }
 
 #loginModal .input-group .btn-outline-secondary {
-    border: 1px solid #ddd;
+    border-color: #ddd;
     border-left: none;
     background-color: #f8f9fa;
 }

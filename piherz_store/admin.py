@@ -5,7 +5,7 @@ from .models import Categoria, Producto, ImagenProducto, CarritoItem
 class ImagenProductoInline(admin.TabularInline):
     model = ImagenProducto
     extra = 3
-    fields = ['imagen', 'orden']
+    fields = ['imagen', 'color', 'orden']
     ordering = ['orden']
 
 @admin.register(Categoria)
