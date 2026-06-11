@@ -125,6 +125,9 @@ def logout_view(request):
     logout(request)
     return redirect('index')
 
+def mis_compras(request):
+    return render(request, 'piherz_store/mis_compras.html')
+
 def obtener_carrito_cantidad(request):
     """Vista para obtener la cantidad actual del carrito via AJAX"""
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':

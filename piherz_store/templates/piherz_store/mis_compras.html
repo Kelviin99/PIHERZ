@@ -1,0 +1,33 @@
+{% extends 'piherz_store/base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">Mis compras</h1>
+            
+            <!-- Tab Content -->
+            <div class="tab-content" id="comprasTabsContent">
+                <!-- Compras Online Tab -->
+                <div class="tab-pane fade show active" id="compras-online" role="tabpanel" aria-labelledby="compras-online-tab">
+                    <!-- Empty State -->
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <i class="bi bi-bag-x" style="font-size: 4rem; color: #6c757d;"></i>
+                        </div>
+                        <h3 class="mb-3">No tienes compras</h3>
+                        <p class="text-muted mb-4">Explora nuestro catálogo y realiza tu primera compra</p>
+                        <a href="{% url 'index' %}" class="btn btn-piherz d-block mx-auto" style="max-width: 300px;">
+                            Comprar en Piherz.com
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Compras en Linio Tab -->
+                <div class="tab-pane fade" id="compras-linio" role="tabpanel" aria-labelledby="compras-linio-tab">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
