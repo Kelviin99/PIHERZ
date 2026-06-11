@@ -29,6 +29,31 @@
         height: 100%;
         object-fit: cover;
     }
+
+    #carouselIndicators button {
+        background-color: rgba(108, 117, 125, 0.5) !important;
+    }
+
+    #carouselIndicators button.active {
+        background-color: #0dcaf0 !important;
+    }
+
+    @media (max-width: 768px) {
+        #carouselIndicators button {
+            width: 10px !important;
+            height: 10px !important;
+            border-radius: 50%;
+            background-color: rgba(108, 117, 125, 0.5) !important;
+            border: none;
+            margin: 0 3px;
+        }
+
+        #carouselIndicators button.active {
+            background-color: #0dcaf0 !important;
+            width: 12px !important;
+            height: 12px !important;
+        }
+    }
 </style>
 {% endblock %}
 
