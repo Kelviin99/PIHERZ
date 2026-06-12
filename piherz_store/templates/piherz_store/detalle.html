@@ -341,6 +341,15 @@
                     break;
                 }
             }
+
+            // Update active class on left-side thumbnails (desktop only)
+            document.querySelectorAll('.thumbnail-item').forEach(item => {
+                item.classList.remove('active');
+                const thumbnailImgSrc = item.querySelector('.thumbnail-thumb').src;
+                if (thumbnailImgSrc.includes(variantImage) || variantImage.includes(thumbnailImgSrc) || thumbnailImgSrc === variantImage) {
+                    item.classList.add('active');
+                }
+            });
         }
     }
 </script>

@@ -278,6 +278,20 @@ document.addEventListener('DOMContentLoaded', function() {
         new bootstrap.Carousel(carousel, {
             touch: true
         });
+
+        // Actualizar indicadores personalizados cuando el carrusel cambie
+        carousel.addEventListener('slide.bs.carousel', function(event) {
+            const carouselId = carousel.id;
+            const newIndex = event.to;
+            const indicators = document.querySelectorAll(`[data-bs-target="#${carouselId}"].carousel-indicator-custom`);
+            indicators.forEach(function(indicator, index) {
+                if (index === newIndex) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        });
     });
 
     // Detectar swipe vs clic en móvil para navegación más rápida
