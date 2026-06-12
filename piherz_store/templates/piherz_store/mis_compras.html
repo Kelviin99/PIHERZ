@@ -1,32 +1,67 @@
 {% extends 'piherz_store/base.html' %}
+{% load humanize %}
 
 {% block content %}
 <div class="container py-5">
     <div class="row">
         <div class="col-12">
             <h1 class="mb-4">Mis compras</h1>
-            
-            <!-- Tab Content -->
-            <div class="tab-content" id="comprasTabsContent">
-                <!-- Compras Online Tab -->
-                <div class="tab-pane fade show active" id="compras-online" role="tabpanel" aria-labelledby="compras-online-tab">
-                    <!-- Empty State -->
-                    <div class="text-center py-5">
-                        <div class="mb-4">
-                            <i class="bi bi-bag-x" style="font-size: 4rem; color: #6c757d;"></i>
-                        </div>
-                        <h3 class="mb-3">No tienes compras</h3>
-                        <p class="text-muted mb-4">Explora nuestro catálogo y realiza tu primera compra</p>
-                        <a href="{% url 'index' %}" class="btn btn-piherz d-block mx-auto" style="max-width: 300px;">
-                            Comprar en Piherz.com
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Compras en Linio Tab -->
-                <div class="tab-pane fade" id="compras-linio" role="tabpanel" aria-labelledby="compras-linio-tab">
-                </div>
+
+            {% if carrito_items %}
+            <!-- Lista de compras -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio unitario</th>
+                            <th>Subtotal</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in carrito_items %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if item.producto.imagen %}
+                                    <img src="{{ item.producto.imagen.url }}" alt="{{ item.producto.nombre }}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                                    {% endif %}
+                                    <div>
+                                        <h6 class="mb-0">{{ item.producto.nombre }}</h6>
+                                        <small class="text-muted">{{ item.producto.categoria.nombre }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ item.cantidad }}</td>
+                            <td>${{ item.producto.precio|intcomma }}</td>
+                            <td>${{ item.subtotal|intcomma }}</td>
+                            <td>{{ item.creado|date:"d/m/Y H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold">Total:</td>
+                            <td colspan="2" class="fw-bold" style="color: #0dcaf0;">${{ total|intcomma }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
+            {% else %}
+            <!-- Empty State -->
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="bi bi-bag-x" style="font-size: 4rem; color: #6c757d;"></i>
+                </div>
+                <h3 class="mb-3">No tienes compras</h3>
+                <p class="text-muted mb-4">Explora nuestro catálogo y realiza tu primera compra</p>
+                <a href="{% url 'index' %}" class="btn btn-piherz d-block mx-auto" style="max-width: 300px;">
+                    Comprar en Piherz.com
+                </a>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
