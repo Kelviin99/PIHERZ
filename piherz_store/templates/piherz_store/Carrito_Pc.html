@@ -14,7 +14,7 @@
         <span class="fw-bold fs-5">${{ total|default:0|floatformat:0|intcomma }}</span>
     </div>
     
-    <a href="#" class="btn w-100 py-3 text-white" style="background-color: #00CED1; font-weight: 600; border-radius: 5px; font-size: 1.1rem;">
+    <a href="{% url 'checkout' %}" class="btn w-100 py-3 text-white" style="background-color: #00CED1; font-weight: 600; border-radius: 5px; font-size: 1.1rem;">
         Continuar compra
     </a>
 </div>

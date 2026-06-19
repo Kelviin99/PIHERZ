@@ -1,0 +1,201 @@
+{% extends 'piherz_store/base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="fw-bold mb-4">Checkout</h2>
+    
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Dirección de Envío</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="checkoutForm">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label">
+                                {{ checkout_form.direccion_existente.label }}
+                            </label>
+                            {{ checkout_form.direccion_existente }}
+                            {% if checkout_form.direccion_existente.errors %}
+                                <div class="text-danger small">{{ checkout_form.direccion_existente.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-check-label">
+                                {{ checkout_form.usar_direccion_nueva }}
+                                {{ checkout_form.usar_direccion_nueva.label }}
+                            </label>
+                        </div>
+                        
+                        <div id="nuevaDireccionContainer" style="display: none;">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">{{ direccion_form.nombre.label }}</label>
+                                    {{ direccion_form.nombre }}
+                                    {% if direccion_form.nombre.errors %}
+                                        <div class="text-danger small">{{ direccion_form.nombre.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">{{ direccion_form.apellido.label }}</label>
+                                    {{ direccion_form.apellido }}
+                                    {% if direccion_form.apellido.errors %}
+                                        <div class="text-danger small">{{ direccion_form.apellido.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">{{ direccion_form.direccion.label }}</label>
+                                    {{ direccion_form.direccion }}
+                                    {% if direccion_form.direccion.errors %}
+                                        <div class="text-danger small">{{ direccion_form.direccion.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">{{ direccion_form.ciudad.label }}</label>
+                                    {{ direccion_form.ciudad }}
+                                    {% if direccion_form.ciudad.errors %}
+                                        <div class="text-danger small">{{ direccion_form.ciudad.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">{{ direccion_form.departamento.label }}</label>
+                                    {{ direccion_form.departamento }}
+                                    {% if direccion_form.departamento.errors %}
+                                        <div class="text-danger small">{{ direccion_form.departamento.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">{{ direccion_form.codigo_postal.label }}</label>
+                                    {{ direccion_form.codigo_postal }}
+                                    {% if direccion_form.codigo_postal.errors %}
+                                        <div class="text-danger small">{{ direccion_form.codigo_postal.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">{{ direccion_form.telefono.label }}</label>
+                                    {{ direccion_form.telefono }}
+                                    {% if direccion_form.telefono.errors %}
+                                        <div class="text-danger small">{{ direccion_form.telefono.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-check-label">
+                                        {{ direccion_form.es_predeterminada }}
+                                        {{ direccion_form.es_predeterminada.label }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Método de Pago</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Selecciona método de pago</label>
+                        {{ checkout_form.metodo_pago }}
+                        {% if checkout_form.metodo_pago.errors %}
+                            <div class="text-danger small">{{ checkout_form.metodo_pago.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Notas Adicionales</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        {{ checkout_form.notas }}
+                        {% if checkout_form.notas.errors %}
+                            <div class="text-danger small">{{ checkout_form.notas.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Resumen del Pedido</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="mb-2">Productos ({{ carrito|length }})</h6>
+                        {% for key, item in carrito.items %}
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="small">{{ item.nombre|default:key }}</span>
+                                <span class="small">${{ item.precio|floatformat:0|intcomma }} x {{ item.cantidad }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal</span>
+                        <span>${{ total|floatformat:0|intcomma }}</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Envío</span>
+                        <span>${{ costo_envio|floatformat:0|intcomma }}</span>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="fw-bold">Total</span>
+                        <span class="fw-bold text-piherz">${{ total_final|floatformat:0|intcomma }}</span>
+                    </div>
+                    
+                    <button type="submit" form="checkoutForm" class="btn btn-piherz w-100 btn-lg">
+                        Confirmar Pedido
+                    </button>
+                    
+                    <a href="{% url 'ver_carrito' %}" class="btn btn-outline-secondary w-100 mt-2">
+                        Volver al Carrito
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const usarNuevaCheckbox = document.getElementById('id_usar_direccion_nueva');
+    const direccionExistente = document.getElementById('id_direccion_existente');
+    const nuevaDireccionContainer = document.getElementById('nuevaDireccionContainer');
+    
+    if (usarNuevaCheckbox) {
+        usarNuevaCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                nuevaDireccionContainer.style.display = 'block';
+                direccionExistente.disabled = true;
+                direccionExistente.value = '';
+            } else {
+                nuevaDireccionContainer.style.display = 'none';
+                direccionExistente.disabled = false;
+            }
+        });
+    }
+    
+    // Si hay dirección existente seleccionada, ocultar nueva dirección
+    if (direccionExistente && direccionExistente.value) {
+        nuevaDireccionContainer.style.display = 'none';
+    }
+});
+</script>
+{% endblock %}

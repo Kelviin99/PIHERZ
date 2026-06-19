@@ -1,0 +1,68 @@
+{% extends 'piherz_store/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Contáctanos</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">¿Tienes alguna pregunta o comentario? Estamos aquí para ayudarte.</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="asunto" class="form-label">Asunto</label>
+                                <input type="text" class="form-control" id="asunto" name="asunto" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="mensaje" class="form-label">Mensaje</label>
+                                <textarea class="form-control" id="mensaje" name="mensaje" rows="5" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-piherz">Enviar Mensaje</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Información de Contacto</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="fw-semibold"><i class="bi bi-geo-alt"></i> Dirección</h6>
+                        <p class="text-muted mb-0">Calle Principal #123<br>Bogotá, Colombia</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-semibold"><i class="bi bi-envelope"></i> Email</h6>
+                        <p class="text-muted mb-0">contacto@piherz.com</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-semibold"><i class="bi bi-telephone"></i> Teléfono</h6>
+                        <p class="text-muted mb-0">+57 300 123 4567</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="fw-semibold"><i class="bi bi-clock"></i> Horario</h6>
+                        <p class="text-muted mb-0">Lun - Vie: 9:00 - 18:00<br>Sáb: 10:00 - 14:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

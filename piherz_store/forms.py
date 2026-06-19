@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from .models import Direccion, Reseña
 
 class RegistroForm(forms.Form):
     username = forms.CharField(
@@ -73,3 +74,66 @@ class RegistroForm(forms.Form):
             raise forms.ValidationError('Las contraseñas no coinciden')
 
         return cleaned_data
+
+class DireccionForm(forms.ModelForm):
+    class Meta:
+        model = Direccion
+        fields = ['nombre', 'apellido', 'direccion', 'ciudad', 'departamento', 'codigo_postal', 'telefono', 'es_predeterminada']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre'}),
+            'apellido': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellido'}),
+            'direccion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Dirección de envío'}),
+            'ciudad': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ciudad'}),
+            'departamento': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Departamento'}),
+            'codigo_postal': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Código postal'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono'}),
+            'es_predeterminada': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+class CheckoutForm(forms.Form):
+    direccion_existente = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escribe tu dirección completa'}),
+        label='Escribe tu dirección'
+    )
+    usar_direccion_nueva = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        label='Usar una dirección nueva'
+    )
+    metodo_pago = forms.ChoiceField(
+        choices=[('stripe', 'Tarjeta de crédito/débito'), ('contra_entrega', 'Contra entrega')],
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+        initial='stripe'
+    )
+    notas = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Notas adicionales para tu pedido'}),
+        label='Notas adicionales'
+    )
+
+    def __init__(self, *args, **kwargs):
+        usuario = kwargs.pop('usuario', None)
+        super().__init__(*args, **kwargs)
+        if usuario:
+            self.fields['direccion_existente'].queryset = Direccion.objects.filter(usuario=usuario)
+
+class PerfilForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class ReseñaForm(forms.ModelForm):
+    class Meta:
+        model = Reseña
+        fields = ['calificacion', 'comentario']
+        widgets = {
+            'calificacion': forms.RadioSelect(attrs={'class': 'form-check-input'}),
+            'comentario': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Escribe tu reseña aquí...'}),
+        }

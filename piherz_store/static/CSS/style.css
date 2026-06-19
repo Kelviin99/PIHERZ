@@ -68,13 +68,17 @@ body {
 
 
 
-/* Transición suave de imágenes estilo Falabella */
+/* Transición suave de imágenes estilo e-commerce profesional */
 
 #productCarousel .carousel-item {
 
-    transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+    transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.5s cubic-bezier(0.33, 1, 0.68, 1);
 
-    overflow: visible;
+    overflow: hidden;
+
+    backface-visibility: hidden;
+
+    -webkit-backface-visibility: hidden;
 
 }
 
@@ -82,7 +86,7 @@ body {
 
 #productCarousel .carousel-item img {
 
-    transition: opacity 0.6s ease-in-out;
+    transition: opacity 0.4s cubic-bezier(0.33, 1, 0.68, 1), transform 0.4s cubic-bezier(0.33, 1, 0.68, 1);
 
     object-fit: contain;
 
@@ -90,21 +94,14 @@ body {
 
     height: auto;
 
-}
-
-
-
-#productCarousel .carousel-inner {
-
-    overflow: hidden;
-
-    position: relative;
+    will-change: transform, opacity;
 
 }
 
 
 
-/* Horizontal Scroll Gallery solo para móvil */
+
+/* Horizontal Scroll Gallery solo para móvil - Mejorado con transiciones suaves */
 
 @media (max-width: 768px) {
 
@@ -132,7 +129,7 @@ body {
 
         scroll-snap-align: start;
 
-        transition: none;
+        transition: opacity 0.3s cubic-bezier(0.33, 1, 0.68, 1);
 
         width: 100%;
 
@@ -150,6 +147,8 @@ body {
 
         object-fit: contain;
 
+        transition: opacity 0.25s cubic-bezier(0.33, 1, 0.68, 1);
+
     }
 
     
@@ -157,6 +156,15 @@ body {
     #productCarousel .carousel-item.active {
 
         position: relative;
+
+        opacity: 1;
+
+    }
+
+    
+    #productCarousel .carousel-item:not(.active) {
+
+        opacity: 0.5;
 
     }
 
@@ -776,6 +784,50 @@ input[type=number] {
 
 }
 
+/* Quitar color de fondo de checkboxes pero mantener el checkmark */
+.form-check-input[type="checkbox"]:checked {
+    background-color: white !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%230dcaf0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8l3 3 5-5'/%3e%3c/svg%3e") !important;
+    border-color: #0dcaf0 !important;
+}
+
+.form-check-input[type="checkbox"]:not(:checked) {
+    border-color: #adb5bd !important;
+    background-color: white !important;
+}
+
+.form-check-input[type="checkbox"]:focus:not(:checked) {
+    box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.25) !important;
+    border-color: #adb5bd !important;
+}
+
+.form-check-input[type="checkbox"]:focus:checked {
+    box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.25) !important;
+    border-color: #0dcaf0 !important;
+}
+
+/* Radio buttons - mismo estilo que checkboxes */
+.form-check-input[type="radio"]:checked {
+    background-color: white !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%230dcaf0'/%3e%3c/svg%3e") !important;
+    border-color: #0dcaf0 !important;
+}
+
+.form-check-input[type="radio"]:not(:checked) {
+    border-color: #adb5bd !important;
+    background-color: white !important;
+}
+
+.form-check-input[type="radio"]:focus:not(:checked) {
+    box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.25) !important;
+    border-color: #adb5bd !important;
+}
+
+.form-check-input[type="radio"]:focus:checked {
+    box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.25) !important;
+    border-color: #0dcaf0 !important;
+}
+
 
 
 /* --- Product card alignment --- */
@@ -896,7 +948,9 @@ div.thumbnail-item {
 
     cursor: pointer !important;
 
-    transition: all 0.3s ease !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+    transform: scale(1);
 
 }
 
@@ -907,6 +961,8 @@ div.thumbnail-item:hover {
     border-color: #0dcaf0 !important;
 
     box-shadow: 0 2px 8px rgba(13, 202, 240, 0.2) !important;
+
+    transform: scale(1.05);
 
 }
 
@@ -919,6 +975,8 @@ div.thumbnail-item.active {
     background-color: #e0f7fa !important;
 
     box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3) !important;
+
+    transform: scale(1.08);
 
 }
 

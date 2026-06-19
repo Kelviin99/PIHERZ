@@ -1,0 +1,45 @@
+{% extends 'piherz_store/base.html' %}
+{% load humanize %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="fw-bold mb-4">Mi Lista de Deseos</h2>
+    
+    {% if lista_deseos %}
+        <div class="row">
+            {% for item in lista_deseos %}
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 product-card">
+                        {% if item.producto.imagen %}
+                            <img src="{{ item.producto.imagen.url }}" class="card-img-top product-card-img" alt="{{ item.producto.nombre }}">
+                        {% endif %}
+                        <div class="card-body product-card-body">
+                            <h5 class="card-title">{{ item.producto.nombre }}</h5>
+                            <p class="card-text text-piherz">${{ item.producto.precio|intcomma }}</p>
+                            <div class="d-grid gap-2 mt-3">
+                                <a href="{% url 'detalle_producto' item.producto.id %}" class="btn btn-piherz">
+                                    Ver Producto
+                                </a>
+                                <a href="{% url 'agregar_al_carrito' item.producto.id %}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-cart3"></i> Agregar al Carrito
+                                </a>
+                                <a href="{% url 'quitar_de_lista_deseos' item.producto.id %}" class="btn btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-heart fs-1 text-muted mb-3"></i>
+            <p class="fs-4">Tu lista de deseos está vacía</p>
+            <a href="{% url 'index' %}" class="btn btn-piherz mt-3">
+                Explorar Productos
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

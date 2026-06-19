@@ -96,3 +96,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = '/static/'
 # Esto le dice a Django dónde buscar los archivos si la carpeta está en la raíz
 STATICFILES_DIRS = []
+
+# --- CONFIGURACIÓN DE STRIPE ---
+STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', 'pk_test_tu_clave_publica_aqui')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', 'sk_test_tu_clave_secreta_aqui')
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
+
+# --- CONFIGURACIÓN DE EMAIL ---
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Para desarrollo, muestra emails en consola
+# Para producción, usar un backend real como:
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'tu_email@gmail.com'
+# EMAIL_HOST_PASSWORD = 'tu_contraseña'
+
+DEFAULT_FROM_EMAIL = 'noreply@piherz.com'

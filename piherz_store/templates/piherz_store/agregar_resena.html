@@ -1,0 +1,44 @@
+{% extends 'piherz_store/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Agregar Reseña - {{ producto.nombre }}</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Calificación</label>
+                            <div class="d-flex gap-3">
+                                {% for i in "12345" %}
+                                    <div class="form-check">
+                                        <input type="radio" name="calificacion" value="{{ i }}" class="form-check-input" id="calificacion{{ i }}" required>
+                                        <label class="form-check-label" for="calificacion{{ i }}">
+                                            {{ i }} <i class="bi bi-star-fill text-warning"></i>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="id_comentario" class="form-label fw-semibold">Tu Reseña</label>
+                            {{ form.comentario }}
+                            {% if form.comentario.errors %}
+                                <div class="text-danger small">{{ form.comentario.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-piherz">Publicar Reseña</button>
+                            <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

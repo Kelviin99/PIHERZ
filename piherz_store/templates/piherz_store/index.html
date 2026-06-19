@@ -15,6 +15,7 @@
     height: 220px !important;
     object-fit: cover !important;
     width: 100% !important;
+    transition: opacity 0.3s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .product-card-img-container .carousel {
@@ -141,7 +142,7 @@
     background: rgba(108, 117, 125, 0.5);
     border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .carousel-indicator-custom.active {
@@ -176,7 +177,7 @@
                             <div class="carousel-inner">
                                 {% for imagen in producto.imagenes.all %}
                                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                    <img src="{{ imagen.imagen.url }}" class="card-img-top product-card-img" alt="{{ producto.nombre }}">
+                                    <img src="{{ imagen.imagen.url }}" class="card-img-top product-card-img" alt="{{ producto.nombre }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
                                 </div>
                                 {% endfor %}
                             </div>
@@ -188,7 +189,7 @@
                             </button>
                         </div>
                         {% else %}
-                        <img src="{{ producto.imagen.url }}" class="card-img-top product-card-img" alt="{{ producto.nombre }}">
+                        <img src="{{ producto.imagen.url }}" class="card-img-top product-card-img" alt="{{ producto.nombre }}" loading="lazy">
                         {% endif %}
                     </div>
                 </a>

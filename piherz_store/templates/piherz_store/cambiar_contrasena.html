@@ -1,0 +1,37 @@
+{% extends 'piherz_store/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Cambiar Contraseña</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="contrasena_actual" class="form-label">Contraseña Actual</label>
+                            <input type="password" class="form-control" id="contrasena_actual" name="contrasena_actual" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nueva_contrasena" class="form-label">Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="nueva_contrasena" name="nueva_contrasena" required minlength="8">
+                            <small class="text-muted">Mínimo 8 caracteres</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmar_contrasena" class="form-label">Confirmar Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="confirmar_contrasena" name="confirmar_contrasena" required minlength="8">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-piherz">Cambiar Contraseña</button>
+                            <a href="{% url 'perfil_usuario' %}" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

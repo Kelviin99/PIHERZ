@@ -10,7 +10,7 @@
         border-radius: 6px;
         overflow: hidden;
         border: 2px solid #dee2e6;
-        transition: all 0.2s;
+        transition: all 0.3s cubic-bezier(0.33, 1, 0.68, 1);
         cursor: pointer;
     }
 
@@ -32,10 +32,18 @@
 
     #carouselIndicators button {
         background-color: rgba(108, 117, 125, 0.5) !important;
+        transition: all 0.3s cubic-bezier(0.33, 1, 0.68, 1);
     }
 
     #carouselIndicators button.active {
         background-color: #0dcaf0 !important;
+    }
+
+    @media (min-width: 769px) {
+        .d-none.d-md-flex.align-items-center .flex-grow-1 {
+            align-self: flex-end;
+            margin-top: 1.6rem;
+        }
     }
 
     @media (max-width: 768px) {
@@ -52,6 +60,15 @@
             background-color: #0dcaf0 !important;
             width: 12px !important;
             height: 12px !important;
+        }
+
+        /* Quitar efecto blanco en transición del carrusel en móvil */
+        #productCarousel .carousel-item {
+            transition: none !important;
+        }
+
+        #productCarousel .carousel-inner {
+            background-color: transparent !important;
         }
     }
 </style>
@@ -72,16 +89,16 @@
                     <div class="d-flex flex-column gap-3" id="thumbnailsContainer">
                         {% if producto.imagenes.exists %}
                             {% for imagen in producto.imagenes.all %}
-                            <div class="border rounded p-2 bg-white thumbnail-item cursor-pointer{% if forloop.first %} active{% endif %}" 
+                            <div class="border rounded p-2 bg-white thumbnail-item cursor-pointer{% if forloop.first %} active{% endif %}"
                                  onclick="cambiarImagen(this, '{{ imagen.imagen.url }}')">
-                                <img src="{{ imagen.imagen.url }}" class="img-fluid thumbnail-thumb" alt="{{ producto.nombre }}" >
+                                <img src="{{ imagen.imagen.url }}" class="img-fluid thumbnail-thumb" alt="{{ producto.nombre }}" loading="lazy">
                             </div>
                             {% endfor %}
                         {% else %}
                             <div class="border rounded p-2 bg-white thumbnail-item cursor-pointer active"
                                  onclick="cambiarImagen(this, '{{ producto.imagen.url }}')">
                                 {% if producto.imagen %}
-                                    <img src="{{ producto.imagen.url }}" class="img-fluid thumbnail-thumb" alt="{{ producto.nombre }}" >
+                                    <img src="{{ producto.imagen.url }}" class="img-fluid thumbnail-thumb" alt="{{ producto.nombre }}" loading="lazy">
                                 {% endif %}
                             </div>
                         {% endif %}
@@ -93,12 +110,12 @@
                             {% if producto.imagenes.exists %}
                                 {% for imagen in producto.imagenes.all %}
                                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                        <img src="{{ imagen.imagen.url }}" class="d-block w-100 main-product-image" alt="{{ producto.nombre }}">
+                                        <img src="{{ imagen.imagen.url }}" class="d-block w-100 main-product-image" alt="{{ producto.nombre }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
                                     </div>
                                 {% endfor %}
                             {% else %}
                                 <div class="carousel-item active">
-                                    <img src="{{ producto.imagen.url }}" class="d-block w-100 main-product-image" alt="{{ producto.nombre }}">
+                                    <img src="{{ producto.imagen.url }}" class="d-block w-100 main-product-image" alt="{{ producto.nombre }}" loading="eager">
                                 </div>
                             {% endif %}
                         </div>
@@ -179,7 +196,7 @@
             <h2 class="fw-bold mb-4" style="font-size: 2.2rem;"><span class="text-piherz">${{ producto.precio|intcomma }}</span></h2>
             <p class="text-secondary mb-4" style="line-height: 1.75;">{{ producto.descripcion }}</p>
 
-            <form id="formCarrito" onsubmit="return ejecutarCarrito(event, {{ producto.id }}, '{{ producto.imagen.url|default:''|escapejs }}', '{{ producto.nombre|escapejs }}')">
+            <form id="formCarrito" data-product-id="{{ producto.id }}" data-product-img="{{ producto.imagen.url|default:''|escapejs }}" data-product-name="{{ producto.nombre|escapejs }}" data-product-price="{{ producto.precio }}">
                 {% csrf_token %}
                 
                 <div class="d-none d-md-flex align-items-center gap-3">
@@ -187,13 +204,13 @@
                         <label for="cantidad" class="form-label small text-secondary d-block mb-2">Cantidad</label>
                         <div class="input-group" style="width: 130px;">
                             <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(1, false)">−</button>
-                            <input type="number" id="cantidad" name="cantidad" value="1" min="1" class="form-control text-center" readonly>
+                            <input type="number" id="cantidad" name="cantidad" value="1" min="0" class="form-control text-center">
                             <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(1, true)">+</button>
                         </div>
                     </div>
                     <div class="flex-grow-1">
                         {% if producto.stock > 0 %}
-                        <button type="submit" class="btn btn-piherz w-100 btn-lg">
+                        <button type="button" class="btn btn-piherz w-100 btn-lg" onclick="ejecutarCarrito(event, {{ producto.id }}, '{{ producto.imagen.url|default:''|escapejs }}', '{{ producto.nombre|escapejs }}')">
                             Agregar al Carrito
                             <i class="bi bi-cart3"></i>
                         </button>
@@ -218,14 +235,14 @@
                         <div style="width: 100px;">
                             <div class="input-group input-group-sm">
                                 <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(1, false)">−</button>
-                                <input type="number" id="cantidadMobile" value="1" min="1" class="form-control text-center" readonly>
+                                <input type="number" id="cantidadMobile" value="1" min="0" class="form-control text-center">
                                 <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(1, true)">+</button>
                             </div>
                         </div>
                         <div class="flex-grow-1" style="margin-left: 60px !important;">
                             {% if producto.stock > 0 %}
                             <!-- AJUSTAR TAMAÑO BOTÓN MÓVIL: Cambia py-5 por py-1 (pequeño), py-3 (mediano), py-5 (grande) -->
-                            <button type="submit" class="btn btn-piherz py-5" style="width: 200px !important;">
+                            <button type="button" class="btn btn-piherz py-5" style="width: 200px !important;" onclick="ejecutarCarrito(event, {{ producto.id }}, '{{ producto.imagen.url|default:''|escapejs }}', '{{ producto.nombre|escapejs }}')">
                                 Agregar
                                 <i class="bi bi-cart3"></i>
                             </button>
@@ -246,18 +263,68 @@
     function cambiarCantidad(id, incrementar) {
         const inputPc = document.getElementById('cantidad');
         const inputMob = document.getElementById('cantidadMobile');
-        let val = parseInt(inputPc.value);
+        let val = parseInt(inputPc.value) || 0;
         if (incrementar) val++;
-        else if (val > 1) val--;
-        inputPc.value = val;
-        inputMob.value = val;
+        else if (val > 0) val--;
+        inputPc.value = val || '';
+        inputMob.value = val || '';
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputPc = document.getElementById('cantidad');
+        const inputMob = document.getElementById('cantidadMobile');
+        const form = document.getElementById('formCarrito');
+
+        // Evento Enter para input PC
+        if (inputPc && form) {
+            inputPc.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const productId = form.getAttribute('data-product-id');
+                    const productImg = form.getAttribute('data-product-img');
+                    const productName = form.getAttribute('data-product-name');
+                    ejecutarCarrito(e, productId, productImg, productName);
+                }
+            });
+
+            // Permitir que el campo quede vacío cuando se borre
+            inputPc.addEventListener('input', function() {
+                if (this.value === '') {
+                    this.value = '';
+                }
+            });
+        }
+
+        // Evento Enter para input Mobile
+        if (inputMob && form) {
+            inputMob.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const productId = form.getAttribute('data-product-id');
+                    const productImg = form.getAttribute('data-product-img');
+                    const productName = form.getAttribute('data-product-name');
+                    ejecutarCarrito(e, productId, productImg, productName);
+                }
+            });
+
+            // Permitir que el campo quede vacío cuando se borre
+            inputMob.addEventListener('input', function() {
+                if (this.value === '') {
+                    this.value = '';
+                }
+            });
+        }
+    });
 
     function ejecutarCarrito(event, id, img, nom) {
         event.preventDefault();
-        const cant = document.getElementById('cantidad').value;
+        const inputPc = document.getElementById('cantidad');
+        const inputMob = document.getElementById('cantidadMobile');
+        const cant = (inputMob && inputMob.offsetParent !== null) ? inputMob.value : (inputPc && inputPc.offsetParent !== null ? inputPc.value : 1);
+        const form = document.getElementById('formCarrito');
+        const precio = form.getAttribute('data-product-price');
         if (typeof agregarAlCarrito === 'function') {
-            agregarAlCarrito(id, cant, img, nom);
+            agregarAlCarrito(id, cant, img, nom, precio);
         } else {
             console.error("La función agregarAlCarrito no está definida en base.html");
         }
@@ -288,7 +355,9 @@
         // Habilitar swipe en móvil para el carrusel
         const carouselElement = document.getElementById('productCarousel');
         const carousel = new bootstrap.Carousel(carouselElement, {
-            touch: true
+            touch: true,
+            keyboard: true,
+            interval: false
         });
 
         // Event listener para actualizar miniatura activa al navegar el carrusel
@@ -305,6 +374,15 @@
                     item.classList.add('active');
                 }
             });
+        });
+
+        // Keyboard navigation support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                carousel.prev();
+            } else if (e.key === 'ArrowRight') {
+                carousel.next();
+            }
         });
     });
 
@@ -331,16 +409,28 @@
                 mainImage.src = variantImage;
             }
 
-            // Also update carousel to show the correct image
-            const carousel = new bootstrap.Carousel(document.getElementById('productCarousel'));
-            const items = document.querySelectorAll('#productCarousel .carousel-item');
-            for (let i = 0; i < items.length; i++) {
-                const imgSrc = items[i].querySelector('img').src;
-                if (imgSrc.includes(variantImage) || variantImage.includes(imgSrc) || imgSrc === variantImage) {
-                    carousel.to(i);
-                    break;
+            // Obtener el índice de la miniatura de color seleccionada
+            const colorThumbnails = document.querySelectorAll('.color-thumbnail');
+            let colorIndex = -1;
+            colorThumbnails.forEach((thumb, index) => {
+                if (thumb === thumbnail) {
+                    colorIndex = index;
                 }
-            }
+            });
+
+            // Actualizar carrusel al índice correspondiente
+            const carousel = new bootstrap.Carousel(document.getElementById('productCarousel'));
+            carousel.to(colorIndex);
+
+            // Actualizar indicadores (puntos) del carrusel
+            const indicators = document.querySelectorAll('#carouselIndicators button');
+            indicators.forEach((indicator, index) => {
+                if (index === colorIndex) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
 
             // Update active class on left-side thumbnails (desktop only)
             document.querySelectorAll('.thumbnail-item').forEach(item => {

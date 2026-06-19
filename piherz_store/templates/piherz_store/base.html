@@ -142,7 +142,7 @@
 </div>
 
 <script>
-function agregarAlCarrito(productoId, cantidad = 1, imagenUrl = '', productoNombre = '') {
+function agregarAlCarrito(productoId, cantidad = 1, imagenUrl = '', productoNombre = '', precioUnitario = '') {
     fetch(`/agregar-al-carrito/${productoId}/`, {
         method: 'POST',
         headers: {
@@ -161,7 +161,9 @@ function agregarAlCarrito(productoId, cantidad = 1, imagenUrl = '', productoNomb
             }
             document.getElementById('modal-producto').innerText = productoNombre || data.producto;
             document.getElementById('modal-cantidad').innerText = `Cantidad: ${cantidad}`;
-            document.getElementById('modal-precio').innerText = data.precio_formateado || data.precio;
+            const precioTotal = parseFloat(precioUnitario || data.precio) * parseInt(cantidad);
+            const precioTotalFormateado = precioTotal.toLocaleString('es-CO', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            document.getElementById('modal-precio').innerText = `$${precioTotalFormateado}`;
             const modalImg = document.getElementById('modal-img');
             if (imagenUrl) {
                 modalImg.src = imagenUrl;
@@ -170,9 +172,14 @@ function agregarAlCarrito(productoId, cantidad = 1, imagenUrl = '', productoNomb
             }
             const myModal = new bootstrap.Modal(document.getElementById('carritoModal'));
             myModal.show();
+        } else if (data.status === 'error') {
+            alert(data.message || 'Error al agregar al carrito');
         }
     })
-    .catch(error => console.log('Error:', error));
+    .catch(error => {
+        console.log('Error:', error);
+        alert('Error al agregar al carrito. Por favor intenta nuevamente.');
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -21,7 +21,7 @@
                         <div class="row align-items-center">
                             <div class="col-md-2">
                                 {% if item.imagen %}
-                                    <img src="{{ item.imagen }}" alt="{{ item.nombre }}" class="img-fluid rounded" style="max-width: 80px;">
+                                    <img src="{{ item.imagen }}" alt="{{ item.nombre }}" class="img-fluid rounded" style="max-width: 135px;">
                                 {% endif %}
                             </div>
 
@@ -36,9 +36,9 @@
                                 
                                 <form action="{% url 'actualizar_carrito' key %}" method="post" class="d-flex align-items-center">
                                     {% csrf_token %}
-                                    <div class="input-group" style="width: 130px; margin-right: 10px;">
+                                    <div class="input-group" style="width: 90px; margin-right: 10px;">
                                         <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decrementarCantidad(this, '/remover/{{ key }}/')">-</button>
-                                        <input type="number" name="cantidad" value="{{ item.cantidad }}" min="1" class="form-control form-control-sm text-center" step="1" inputmode="numeric" pattern="[0-9]*" oninput="if (this.value === '' || parseInt(this.value) < 1) this.value = 1;">
+                                        <input type="number" name="cantidad" value="{{ item.cantidad }}" min="0" class="form-control form-control-sm text-center" step="1" inputmode="numeric" pattern="[0-9]*">
                                         <button type="button" class="btn btn-outline-secondary btn-sm" onclick="this.previousElementSibling.stepUp()">+</button>
                                     </div>
                                     <button type="submit" class="btn btn-sm text-white" style="background-color: #00CED1; padding: 5px 15px;">Actualizar</button>
@@ -78,14 +78,32 @@
 <script>
 function decrementarCantidad(button, urlEliminar) {
     const input = button.nextElementSibling;
-    const cantidadActual = parseInt(input.value);
+    const cantidadActual = parseInt(input.value) || 0;
     
     if (cantidadActual > 1) {
         input.stepDown();
-    } else {
+    } else if (cantidadActual === 1) {
         // Si la cantidad es 1, eliminar el producto sin confirmación
         window.location.href = urlEliminar;
+    } else {
+        // Si está vacío o es 0, dejarlo vacío
+        input.value = '';
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const cantidadInputs = document.querySelectorAll('input[name="cantidad"]');
+    cantidadInputs.forEach(input => {
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const form = this.closest('form');
+                if (form) {
+                    form.submit();
+                }
+            }
+        });
+    });
+});
 </script>
 {% endblock %}
