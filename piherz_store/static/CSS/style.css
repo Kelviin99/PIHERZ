@@ -2809,3 +2809,467 @@ select.register-page-field-input:focus {
   font-style: normal;
 
 }
+
+
+
+/* Footer - Enlaces legales en móvil */
+
+@media (max-width: 768px) {
+
+    .footer-legal-links {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 0.5rem !important;
+
+    }
+
+}
+
+
+
+/* Página de detalle de producto - Color thumbnails */
+
+.color-thumbnail {
+
+    width: 50px;
+
+    height: 50px;
+
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    border: 2px solid #dee2e6;
+
+    transition: all 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+
+    cursor: pointer;
+
+}
+
+
+
+.color-thumbnail:hover {
+
+    border-color: #adb5bd;
+
+}
+
+
+
+.color-thumbnail.selected {
+
+    border-color: #212529;
+
+    border-width: 3px;
+
+    box-shadow: 0 0 0 2px rgba(33, 37, 41, 0.1);
+
+}
+
+
+
+.color-thumbnail img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+
+/* Página de detalle - Indicadores del carrusel */
+
+#carouselIndicators button {
+
+    background-color: rgba(108, 117, 125, 0.5) !important;
+
+    transition: all 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+
+}
+
+
+
+#carouselIndicators button.active {
+
+    background-color: #0dcaf0 !important;
+
+}
+
+
+
+@media (min-width: 769px) {
+
+    .d-none.d-md-flex.align-items-center .flex-grow-1 {
+
+        align-self: flex-end;
+
+        margin-top: 1.6rem;
+
+    }
+
+}
+
+
+
+@media (max-width: 768px) {
+
+    #carouselIndicators button {
+
+        width: 10px !important;
+
+        height: 10px !important;
+
+        border-radius: 50%;
+
+        background-color: rgba(108, 117, 125, 0.5) !important;
+
+        border: none;
+
+        margin: 0 3px;
+
+    }
+
+
+
+    #carouselIndicators button.active {
+
+        background-color: #0dcaf0 !important;
+
+        width: 12px !important;
+
+        height: 12px !important;
+
+    }
+
+
+
+    /* Quitar efecto blanco en transición del carrusel en móvil */
+
+    #productCarousel .carousel-item {
+
+        transition: none !important;
+
+    }
+
+
+
+    #productCarousel .carousel-inner {
+
+        background-color: transparent !important;
+
+    }
+
+}
+
+
+
+/* Página de inicio - Tarjetas de producto */
+
+.product-card {
+
+    position: relative;
+
+}
+
+
+
+.product-card-img-container {
+
+    position: relative;
+
+}
+
+
+
+.product-card-img-container .carousel-item img {
+
+    height: 220px !important;
+
+    object-fit: cover !important;
+
+    width: 100% !important;
+
+    transition: opacity 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+
+}
+
+
+
+.product-card-img-container .carousel {
+
+    height: 220px !important;
+
+}
+
+
+
+.product-card-img-container .carousel-inner {
+
+    height: 220px !important;
+
+}
+
+
+
+.product-card-img-container .carousel-item {
+
+    height: 220px !important;
+
+}
+
+
+
+.add-to-cart-container {
+
+    opacity: 0;
+
+    transition: opacity 0.3s ease;
+
+    margin-top: 10px;
+
+}
+
+
+
+.product-card:hover .add-to-cart-container {
+
+    opacity: 1;
+
+}
+
+
+
+@media (max-width: 768px) {
+
+    .add-to-cart-container {
+
+        opacity: 1;
+
+    }
+
+
+
+    .carousel-control-custom {
+
+        display: none !important;
+
+    }
+
+
+
+    .carousel-indicators-custom {
+
+        opacity: 1 !important;
+
+    }
+
+
+
+    .carousel-indicator-custom {
+
+        background: rgba(108, 117, 125, 0.5) !important;
+
+        width: 10px !important;
+
+        height: 10px !important;
+
+    }
+
+
+
+    .carousel-indicator-custom.active {
+
+        background: #0dcaf0 !important;
+
+        width: 12px !important;
+
+        height: 12px !important;
+
+    }
+
+}
+
+
+
+.add-to-cart-btn {
+
+    background: #0dcaf0;
+
+    color: white;
+
+    border: none;
+
+    padding: 8px 16px;
+
+    border-radius: 4px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+}
+
+
+
+.add-to-cart-btn:hover {
+
+    background: #0bb8d9;
+
+}
+
+
+
+.carousel-control-custom {
+
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    background: rgba(255, 255, 255, 0.8);
+
+    border: none;
+
+    width: 30px;
+
+    height: 30px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    z-index: 5;
+
+    opacity: 0;
+
+    transition: opacity 0.3s ease;
+
+}
+
+
+
+.product-card:hover .carousel-control-custom {
+
+    opacity: 1;
+
+}
+
+
+
+.carousel-control-custom:hover {
+
+    background: white;
+
+}
+
+
+
+.carousel-control-prev-custom {
+
+    left: 5px;
+
+}
+
+
+
+.carousel-control-next-custom {
+
+    right: 5px;
+
+}
+
+
+
+.carousel-indicators-custom {
+
+    position: relative;
+
+    display: flex;
+
+    gap: 5px;
+
+    justify-content: center;
+
+    margin-bottom: 10px;
+
+    z-index: 5;
+
+    opacity: 0;
+
+    transition: opacity 0.3s ease;
+
+}
+
+
+
+.product-card:hover .carousel-indicators-custom {
+
+    opacity: 1;
+
+}
+
+
+
+.carousel-indicator-custom {
+
+    width: 8px;
+
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: rgba(108, 117, 125, 0.5);
+
+    border: none;
+
+    cursor: pointer;
+
+    transition: all 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+
+}
+
+
+
+.carousel-indicator-custom.active {
+
+    background: #0dcaf0;
+
+    width: 8px;
+
+    height: 8px;
+
+}
+
+
+
+.carousel-indicator-custom:hover {
+
+    background: rgba(13, 202, 240, 0.8);
+
+}

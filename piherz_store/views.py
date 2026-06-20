@@ -715,6 +715,9 @@ def terminos_condiciones(request):
 def politica_privacidad(request):
     return render(request, 'piherz_store/politica_privacidad.html')
 
+def politica_cookies(request):
+    return render(request, 'piherz_store/politica_cookies.html')
+
 def suscribir_newsletter(request):
     if request.method == 'POST':
         email = request.POST.get('email')

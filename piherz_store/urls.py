@@ -30,6 +30,7 @@ urlpatterns = [
     path('sobre-nosotros/', views.sobre_nosotros, name='sobre_nosotros'),
     path('terminos-condiciones/', views.terminos_condiciones, name='terminos_condiciones'),
     path('politica-privacidad/', views.politica_privacidad, name='politica_privacidad'),
+    path('politica-cookies/', views.politica_cookies, name='politica_cookies'),
     path('newsletter/suscribir/', views.suscribir_newsletter, name='suscribir_newsletter'),
     # Sistema de recuperación de contraseña
     path('password-reset/', auth_views.PasswordResetView.as_view(template_name='piherz_store/password_reset.html'), name='password_reset'),

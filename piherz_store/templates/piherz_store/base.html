@@ -252,5 +252,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Footer -->
+<footer class="bg-white text-dark py-4 mt-5">
+    <div class="container">
+        <!-- Primera fila: redes sociales y enlaces legales -->
+        <div class="row align-items-center mb-4">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-dark text-decoration-none">
+                        <i class="bi bi-facebook fs-4"></i>
+                    </a>
+                    <a href="#" class="text-dark text-decoration-none">
+                        <i class="bi bi-instagram fs-4"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <div class="d-flex flex-wrap gap-3 justify-content-md-end footer-legal-links">
+                    <a href="{% url 'terminos_condiciones' %}" class="text-dark text-decoration-none small">Términos y condiciones</a>
+                    <a href="{% url 'politica_cookies' %}" class="text-dark text-decoration-none small">Política de cookies</a>
+                    <a href="{% url 'politica_privacidad' %}" class="text-dark text-decoration-none small">Política de privacidad</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Línea divisoria -->
+        <div class="row">
+            <div class="col-12">
+                <hr class="border-secondary">
+            </div>
+        </div>
+        
+        <!-- Segunda fila: derechos reservados -->
+        <div class="row mt-3">
+            <div class="col-12">
+                <p class="small mb-1">© {{ "now"|date:"Y" }} TODOS LOS DERECHOS RESERVADOS</p>
+                <p class="small text-muted mb-0">Piherz - Tienda online de productos</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
 </body>
 </html>
