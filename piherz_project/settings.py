@@ -17,6 +17,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
     'http://192.168.0.17:8000',
+    'http://127.0.0.1:51135',
 ]
 
 # Application definition
@@ -92,6 +93,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# --- CONFIGURACIÓN DE COOKIES PARA MÓVIL ---
+SESSION_COOKIE_SECURE = False  # False para desarrollo (HTTP), True para producción (HTTPS)
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'  # Permite cookies en navegación normal
+CSRF_COOKIE_SECURE = False  # False para desarrollo
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 STATIC_URL = '/static/'
 # Esto le dice a Django dónde buscar los archivos si la carpeta está en la raíz
